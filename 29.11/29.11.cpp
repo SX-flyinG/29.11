@@ -1,4 +1,4 @@
-#include <iostream>
+п»ї#include <iostream>
 #include <ctime>
 
 using namespace std;
@@ -7,51 +7,74 @@ using namespace std;
 
 
 class Auto {
-	int wheels;
-	int doors;
-	int speed;
-	int color;
-	static enum Colors
-	{
-		purple = 0, // присваивается 0
-		gray = 1,   // присваивается 1
-		blue = 2,   // присваивается 2
-		green = 3,  // присваивается 3
-		brown= 4,  // присваивается 4
-		pink = 5,   // присваивается 5
-		yellow = 6 // присваивается 6
-	};
+    int wheels;
+    int doors;
+    int speed;
+    int color;
+    static enum Colors
+    {
+        purple = 0, 
+        gray = 1,   
+        blue = 2,   
+        green = 3,  
+        brown = 4,  
+        pink = 5,   
+        yellow = 6 
+    };
 public:
-	
 
-	Auto() {
-		int col = rand() % 7;
-		wheels = 4;
-		doors = 4;
-		speed = rand() % 200 + 100;
-		ChooseColor(col);
-	}
 
-	void ChooseColor(int col) {
-		if (col == 0)
-			color = Colors::purple;
-		else if (col == 1)
-			color = Colors::gray;
-		else if (col == 2)
-			color = Colors::blue;
-		else if (col == 3)
-			color = Colors::green;
-		else if (col == 4)
-			color = Colors::brown;
-		else if (col == 5)
-			color = Colors::pink;
-		else if (col == 6)
-			color = Colors::yellow;
-	}
+    Auto() {
+        int col = rand() % 7;
+        wheels = 4;
+        doors = 4;
+        speed = rand() % 200 + 100;
+        ChooseColor(col);
+    }
 
-	void PrintInfo() {
-		cout << "Your car : \n" << "Count of wheels : " << wheels << "\nCount of doors : "<< doors << "\nSpeed of car : " << speed << "km\\h" << "\nColor of car : " << color  << endl;
-	}
+    void ChooseColor(int col) {
+        if (col == 0)
+            color = Colors::purple;
+        else if (col == 1)
+            color = Colors::gray;
+        else if (col == 2)
+            color = Colors::blue;
+        else if (col == 3)
+            color = Colors::green;
+        else if (col == 4)
+            color = Colors::brown;
+        else if (col == 5)
+            color = Colors::pink;
+        else if (col == 6)
+            color = Colors::yellow;
+    }
+
+    int getWheels() {
+        return this->wheels;
+    }
+
+    int getDoors() {
+        return this->doors;
+    }
+
+    int getSpeed() {
+        return this->speed;
+    }
+
+    int getColor() {
+        return color;
+    }
+
+    void AssingValues(const int wheels, const int doors, int speed , int color) {
+        this->wheels = wheels;
+        this->doors = doors;
+        this->speed = speed;
+        this->color = color;
+    }
+
+    void PrintInfo() {
+        cout << "Your car : \n" << "Count of wheels : " << wheels << "\nCount of doors : " << doors << "\nSpeed of car : " << speed << "km\\h" << "\nColor of car : " << color << endl;
+    }
 };
 
 class Parking {
@@ -62,14 +85,15 @@ public:
     Parking() {
         autos = new Auto[amountOfCars];
     }
-    void Adder(Auto user) {
+    void Adder(Auto car) {
         Auto* tempArrOfCars = new Auto[amountOfCars];
 
         for (int i = 0; i < amountOfCars; i++) {
             tempArrOfCars[i].AssingValues(
-                autos[i].getName(),
-                autos[i].getSurname(),
-                autos[i].getAge());
+                autos[i].getWheels(),
+                autos[i].getDoors(),
+                autos[i].getSpeed(),
+                autos[i].getColor());
         }
 
         delete[] autos;
@@ -77,41 +101,37 @@ public:
 
         IncrementAmountOfPoints();
 
-        users = new User[amountOfUsers];
+        autos = new Auto[amountOfCars];
 
-        for (int i = 0; i < amountOfUsers - 1; i++) {
-            users[i].AssingValues(
-                tempArrOfStudents[i].getName(),
-                tempArrOfStudents[i].getSurname(),
-                tempArrOfStudents[i].getAge());
+        for (int i = 0; i < amountOfCars - 1; i++) {
+            tempArrOfCars[i].AssingValues(
+                autos[i].getWheels(),
+                autos[i].getDoors(),
+                autos[i].getSpeed(),
+                autos[i].getColor());
         }
 
-        delete[] tempArrOfStudents;
-        tempArrOfStudents = nullptr;
+        delete[] tempArrOfCars;
+        tempArrOfCars = nullptr;
 
-        users[amountOfUsers - 1].AssingValues(
-            user.getName(),
-            user.getSurname(),
-            user.getAge());
+        autos[amountOfCars - 1].AssingValues(
+            car.getWheels(),
+            car.getDoors(),
+            car.getSpeed(),
+            car.getColor());
     }
 
-    void Deleter(int indexToDelete) {
-        if (indexToDelete < 0 || indexToDelete >= amountOfUsers) {
-            cout << "Invalid index!" << endl;
-            return;
-        }
-        User* tempArrOfStudents = new User[amountOfUsers - 1];
+    void Deleter() {
+        Auto* tempArrOfCars = new Auto[amountOfCars - 1];
         int tempIndex = 0;
 
-        for (int i = 0; i < amountOfUsers; i++) {
-            if (i != indexToDelete - 1) {
-                tempArrOfStudents[tempIndex].AssingValues(
-                    autos[i].getName(),
-                    autos[i].getSurname(),
-                    autos[i].getAge()
-                );
+        for (int i = 0; i < amountOfCars - 1; i++) {
+                tempArrOfCars[tempIndex].AssingValues(
+                    autos[tempIndex].getWheels(),
+                    autos[tempIndex].getDoors(),
+                    autos[tempIndex].getSpeed(),
+                    autos[tempIndex].getColor());
                 tempIndex++;
-            }
         }
 
 
@@ -119,15 +139,21 @@ public:
 
 
         delete[] autos;
-        autos = tempArrOfStudents;
+        autos = tempArrOfCars;
+    }
+
+    void printWholeCars() {
+        for (int i = 0; i < Parking::amountOfCars; i++) {
+            autos[i].PrintInfo();
+        }
     }
 
 
     static void IncrementAmountOfPoints() {
-        amountOfCars ++;
+        amountOfCars++;
     }
     static void DincrementAmountOfPoints() {
-        amountOfCars --;
+        amountOfCars--;
     }
 };
 
@@ -136,9 +162,36 @@ int Parking::amountOfCars = 0;
 
 int main()
 {
-	srand(time(NULL));
-	Auto obj;
-	Auto obj2;
-	obj.PrintInfo();
-	obj2.PrintInfo();
+    Auto obj;
+    Parking obj2;
+    int leave;
+    int choose;
+    srand(time(NULL));
+    while (true) {
+        cout << "1 - add , 2 - delete , 3 - write whole auto : ";
+        cin >> choose;
+        if (choose == 1 ) {
+            cout << Parking::amountOfCars << endl;
+            obj2.Adder(obj);
+            cout << Parking::amountOfCars << endl;
+        }
+        else if (choose == 2 && Parking::amountOfCars > 0) {
+            cout << Parking::amountOfCars << endl;
+            obj2.Deleter();
+            cout << Parking::amountOfCars << endl;
+        }
+        else if (choose == 3) {
+            obj2.printWholeCars();
+        }
+        else {
+            cout << "Do u want to leave from programm : [0 - yes]";
+            cin >> leave;
+            if (leave == 0) {
+                return 0;
+            }
+            else {
+                continue;
+            }
+        }
+    }
 }
